@@ -294,6 +294,11 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // DEV: bypass auth in development for local testing
+  if (process.env.NODE_ENV === "development") {
+    return NextResponse.next();
+  }
+
   // Desktop app: redirect unauthenticated users to desktop-specific error page
   if (isDesktopApp(request)) {
     const hasSession = request.cookies.has("wos-session");
